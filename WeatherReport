@@ -1,0 +1,70 @@
+package Learn_and_Build;
+
+import java.net.URL;
+import java.net.HttpURLConnection;
+import java.util.Scanner;
+import org.json.simple.*;
+import org.json.simple.parser.JSONParser;
+
+public class W_R {
+    public static void main(String[] args) {
+        try {
+            URL url = new URL("http://api.openweathermap.org/geo/1.0/direct?q=PATNA,BR,IN&limit=5&appid=15f63bb69dc36a090d4ece421e15a0ce");
+            /** Here we establish an url connection
+              // Create a HttpURLConnection object to send the GET request **/
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.connect(); /** **/
+
+           int rc = con.getResponseCode(); // Check if the response code is 200, which means the request was successful
+            System.out.println("The connection's ResponseCode is: " + rc);
+            if (rc != 200) {
+                System.out.println("Error 404 " + " Try After sometimes");
+            } else {
+                String data = "";
+                // Check if the response code is 200, which means the request was successful
+                Scanner sc = new Scanner(url.openStream());
+
+                // Read the response body line by line and append it to a string
+                while (sc.hasNext()) {
+                    data += sc.nextLine();
+                }
+                sc.close();
+
+
+                // Parse the response body as a JSONArray
+                JSONParser par = new JSONParser(); // creating a class of par method
+                JSONArray arr = (JSONArray) par.parse(data);
+                System.out.println(arr);
+
+                JSONObject obj = null; // To store the array of all the element of arr( i,e line no.37)
+
+                // Loop through the JSONArray and extract the latitude and longitude of each city
+                for (int i = 0; i < arr.size(); i++) {
+                    obj = (JSONObject) arr.get(i);
+
+                    /** TypeCasting **/
+                   double lon = (double) obj.get("lon"); // implicit conversion --- means forcefully (lower datatype to higher datatype)
+                    double lat = (double) obj.get("lat");
+
+                    // Print the name, latitude and longitude of the city
+                    System.out.println("Name of Country:" +obj.get("country"));
+                    System.out.println("Name of State:" +obj.get("state"));
+                    System.out.println("Name of city:" +obj.get("name"));
+                    System.out.println("Latitude : " +lat);
+                    System.out.println("Longitude :"+lon);
+  
+                        /** Pseudo Code
+                           1. Geocoding URL - connection
+                           2. data fetch - lat , lon
+                           3. pass this lat & lon to WeatherAPI
+                           4. data fetch - temp , pressure
+                        **/
+            
+                }
+
+            }
+        }
+       catch(Exception e){}
+    }
+}
