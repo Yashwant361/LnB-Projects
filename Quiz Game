@@ -1,0 +1,55 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Quiz_Game {
+    public static void main(String[] args) {
+        try {
+            Scanner sc = new Scanner(System.in);
+            File f = new File("questions.txt");
+            File f1 = new File("ans.txt");
+
+            Scanner Reader = new Scanner(f);
+            Scanner Reader1 = new Scanner(f1);
+
+            int size = 5;           // no. of ques
+
+            String[] data = new String[size];              // read question from file q.txt
+            String[] ans = new String[size];               // read ans from file a.txt
+            String[] inputans = new String[size];          // take user input
+
+            int i = 0;
+
+            while(Reader.hasNextLine()){
+                data[i] = Reader.nextLine();
+                ans[i] = Reader1.nextLine();
+                i++;
+            }
+            int score = 0;
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n-------------------------------------------\n  QUIZ BY YASHWANT \n--------------------------------------------\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println("\n\n");
+
+            for( i = 0; i < size; i++) {
+                System.out.println("Q. " + (i+1) + data[i]);
+                System.out.print("Input answer: ");
+                inputans[i] = sc.nextLine();
+
+                if(ans[i].equalsIgnoreCase(inputans[i])){
+                    score += 10;
+                    System.out.println("Correct ! You got 10 points.\nScore: "+score+"\n\n");
+                }
+                else{
+                    score -= 2;
+                    System.out.println("Incorrect ! You lost 2 points. \nScore: "+score+"\n\n");
+                }
+            }
+            System.out.println("Final Score: "+ score);
+        }catch (Exception e){
+
+        }
+    }
+}
